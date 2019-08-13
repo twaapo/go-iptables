@@ -278,6 +278,12 @@ func (ipt *IPTables) Stats(table, chain string) ([][]string, error) {
 	return rows, nil
 }
 
+// ZeroCounters zeroes byte counters of a table, chain or a rule
+func (ipt *IPTables) ZeroCounters(table, chain string, pos int) error {
+	cmd := append([]string{"-t", table, "-Z", chain, strconv.Itoa(pos)})
+	return ipt.run(cmd...)
+}
+
 // ParseStat parses a single statistic row into a Stat struct. The input should
 // be a string slice that is returned from calling the Stat method.
 func (ipt *IPTables) ParseStat(stat []string) (parsed Stat, err error) {
