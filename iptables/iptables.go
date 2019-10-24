@@ -422,16 +422,19 @@ func (ipt *IPTables) run(args ...string) error {
 // writing any stdout output to the given writer
 func (ipt *IPTables) runWithOutput(args []string, stdout io.Writer) error {
 	args = append([]string{ipt.path}, args...)
-	fmu, err := newXtablesFileLock()
-	if err != nil {
-		return err
-	}
-	ul, err := fmu.tryLock()
-	if err != nil {
-		syscall.Close(fmu.fd)
-		return err
-	}
-	defer ul.Unlock()
+	/*
+		fmu, err := newXtablesFileLock()
+		if err != nil {
+			return err
+		}
+			ul, err := fmu.tryLock()
+			if err != nil {
+				syscall.Close(fmu.fd)
+				return err
+			}
+			log.Println("Got lock")
+			defer ul.Unlock()
+	*/
 
 	var stderr bytes.Buffer
 	cmd := exec.Cmd{

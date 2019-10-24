@@ -15,6 +15,7 @@
 package iptables
 
 import (
+	"log"
 	"os"
 	"sync"
 	"syscall"
@@ -59,6 +60,7 @@ func (l *fileLock) tryLock() (Unlocker, error) {
 		l.mu.Unlock()
 		return nopUnlocker{}, nil
 	case nil:
+		log.Println("Lock")
 		return l, nil
 	default:
 		l.mu.Unlock()
@@ -70,6 +72,7 @@ func (l *fileLock) tryLock() (Unlocker, error) {
 // also unlocks the associated mutex.
 func (l *fileLock) Unlock() error {
 	defer l.mu.Unlock()
+	log.Println("Unlock")
 	return syscall.Close(l.fd)
 }
 
